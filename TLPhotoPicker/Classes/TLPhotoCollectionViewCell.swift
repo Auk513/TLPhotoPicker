@@ -90,6 +90,7 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
     
     @objc open var selectedAsset: Bool = false {
         willSet(newValue) {
+            self.orderBgView?.layer.cornerRadius = (self.orderBgView?.bounds.height ?? 2)/2.0
             self.selectedView?.isHidden = !newValue
             self.durationView?.backgroundColor = newValue ? self.configure.selectedColor : UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
             if !newValue {
@@ -159,8 +160,8 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
         self.livePhotoView?.isHidden = true
         self.durationView?.isHidden = true
         self.selectedView?.isHidden = true
-        self.selectedView?.layer.borderWidth = 10
-        self.selectedView?.layer.cornerRadius = 15
+        self.selectedView?.layer.borderWidth = 7
+        self.selectedView?.layer.cornerRadius = 0
         self.orderBgView?.layer.cornerRadius = 2
         self.videoIconImageView?.image = self.configure.videoIcon
         if #available(iOS 11.0, *) {

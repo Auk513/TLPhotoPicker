@@ -42,6 +42,7 @@ public protocol TLPhotosPickerLogDelegate: class {
     func deselectedPhoto(picker: TLPhotosPickerViewController, at: Int)
     func selectedPhoto(picker: TLPhotosPickerViewController, at: Int)
     func selectedAlbum(picker: TLPhotosPickerViewController, title: String, at: Int)
+    func selectedAssetsChanged(picker: TLPhotosPickerViewController)
 }
 
 extension TLPhotosPickerLogDelegate {
@@ -49,6 +50,7 @@ extension TLPhotosPickerLogDelegate {
     func deselectedPhoto(picker: TLPhotosPickerViewController, at: Int) { }
     func selectedPhoto(picker: TLPhotosPickerViewController, at: Int) { }
     func selectedAlbum(picker: TLPhotosPickerViewController, collections: [TLAssetsCollection], at: Int) { }
+    func selectedAssetsChanged(picker: TLPhotosPickerViewController) { }
 }
 
 public struct TLPhotosPickerConfigure {
@@ -347,6 +349,7 @@ open class TLPhotosPickerViewController: UIViewController {
             let selectedPHAsset = self.selectedAssets.first?.phAsset
         {
             self.selectedAssets.removeAll()
+            self.logDelegate?.selectedAssetsChanged(picker: self)
             findIndexAndReloadCells(phAsset: selectedPHAsset)
         }
     }
@@ -359,6 +362,17 @@ open class TLPhotosPickerViewController: UIViewController {
             return true
         }
         return false
+    }
+    
+    open func deselectAllAssets() {
+        for i in selectedAssets.enumerated().reversed() {
+            guard let PHAsset = self.selectedAssets[safe: i.offset]?.phAsset else {
+                continue
+            }
+            selectedAssets.remove(at: i.offset)
+            findIndexAndReloadCells(phAsset: PHAsset)
+        }
+        self.logDelegate?.selectedAssetsChanged(picker: self)
     }
 }
 
@@ -385,10 +399,11 @@ extension TLPhotosPickerViewController {
             return
         }
         let count = CGFloat(self.configure.numberOfColumn)
-        let width = floor((self.view.frame.size.width-(5*(count-1)))/count)
+        let width = floor((self.view.frame.size.width-(2*(count-1)))/count)
         self.thumbnailSize = CGSize(width: width, height: width)
         layout.itemSize = self.thumbnailSize
-        layout.minimumInteritemSpacing = 0
+        layout.minimumInteritemSpacing = 2
+        layout.minimumLineSpacing = 2
         self.collectionView.collectionViewLayout = layout
         self.placeholderThumbnail = centerAtRect(image: self.configure.placeholderIcon, rect: CGRect(x: 0, y: 0, width: width, height: width))
         self.cameraImage = centerAtRect(image: self.configure.cameraIcon, rect: CGRect(x: 0, y: 0, width: width, height: width), bgColor: self.configure.cameraBgColor)
@@ -431,6 +446,9 @@ extension TLPhotosPickerViewController {
     }
     
     private func updatePresentLimitedLibraryButton() {
+        guard self.customNavItem.rightBarButtonItem == nil else {
+            return
+        }
         if #available(iOS 14.0, *), self.photoLibrary.limitMode && self.configure.preventAutomaticLimitedAccessAlert {
             self.customNavItem.rightBarButtonItems = [self.doneButton, self.photosButton]
         } else {
@@ -453,11 +471,23 @@ extension TLPhotosPickerViewController {
                 self?.focusedCollection?.reloadSection(groupedBy: groupedBy)
                 DispatchQueue.main.async {
                     self?.collectionView.reloadData()
+                    self?.scrollToBottom()
                 }
             }
         }else {
             self.collectionView.reloadData()
+            self.scrollToBottom()
         }
+    }
+    
+    private func scrollToBottom() {
+        self.collectionView.layoutIfNeeded()
+        let section: Int = self.focusedCollection?.sections?.count ?? 1
+        guard let collection = self.focusedCollection else {
+            return
+        }
+        let row = self.focusedCollection?.sections?[safe: section]?.assets.count ?? collection.count
+        self.collectionView.scrollToItem(at: .init(row: max(row-1, 0), section: max(section-1, 0)), at: .top, animated: false)
     }
     
     private func reloadTableView() {
@@ -685,6 +715,7 @@ extension TLPhotosPickerViewController: UIImagePickerControllerDelegate, UINavig
                     result.selectedOrder = self.selectedAssets.count + 1
                     result.isSelectedFromCamera = true
                     self.selectedAssets.append(result)
+                    self.logDelegate?.selectedAssetsChanged(picker: self)
                     self.logDelegate?.selectedPhoto(picker: self, at: 1)
                 }
             })
@@ -703,6 +734,7 @@ extension TLPhotosPickerViewController: UIImagePickerControllerDelegate, UINavig
                     result.selectedOrder = self.selectedAssets.count + 1
                     result.isSelectedFromCamera = true
                     self.selectedAssets.append(result)
+                    self.logDelegate?.selectedAssetsChanged(picker: self)
                     self.logDelegate?.selectedPhoto(picker: self, at: 1)
                 }
             }
@@ -1264,6 +1296,7 @@ extension TLPhotosPickerViewController {
         //deselect
             logDelegate?.deselectedPhoto(picker: self, at: indexPath.row)
             selectedAssets.remove(at: index)
+            self.logDelegate?.selectedAssetsChanged(picker: self)
             #if swift(>=4.1)
             selectedAssets = selectedAssets.enumerated().compactMap({ (offset,asset) -> TLPHAsset? in
                 var asset = asset
@@ -1290,6 +1323,7 @@ extension TLPhotosPickerViewController {
             
             asset.selectedOrder = selectedAssets.count + 1
             selectedAssets.append(asset)
+            self.logDelegate?.selectedAssetsChanged(picker: self)
             cell.selectedAsset = true
             cell.orderLabel?.text = "\(asset.selectedOrder)"
             
