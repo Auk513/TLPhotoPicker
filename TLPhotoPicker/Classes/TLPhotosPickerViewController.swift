@@ -93,6 +93,8 @@ public struct TLPhotosPickerConfigure {
     public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
     public var groupByFetch: PHFetchedResultGroupedBy? = nil
     public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
+    public var albumSelectedColor = UIColor(red: 88/255, green: 144/255, blue: 255/255, alpha: 0.1)
+    public var albumNormalColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
     public var popup: [PopupConfigure] = []
     public init() {
         
@@ -134,13 +136,13 @@ open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var navigationBar: UINavigationBar!
     @IBOutlet open var titleView: UIView!
     @IBOutlet open var titleLabel: UILabel!
-    @IBOutlet open var subTitleStackView: UIStackView!
-    @IBOutlet open var subTitleLabel: UILabel!
+//    @IBOutlet open var subTitleStackView: UIStackView!
+//    @IBOutlet open var subTitleLabel: UILabel!
     @IBOutlet open var subTitleArrowImageView: UIImageView!
     @IBOutlet open var albumPopView: TLAlbumPopView!
     @IBOutlet open var collectionView: UICollectionView!
     @IBOutlet open var indicator: UIActivityIndicatorView!
-    @IBOutlet open var popArrowImageView: UIImageView!
+//    @IBOutlet open var popArrowImageView: UIImageView!
     @IBOutlet open var customNavItem: UINavigationItem!
     @IBOutlet open var doneButton: UIBarButtonItem!
     @IBOutlet open var cancelButton: UIBarButtonItem!
@@ -148,7 +150,7 @@ open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var emptyView: UIView!
     @IBOutlet open var emptyImageView: UIImageView!
     @IBOutlet open var emptyMessageLabel: UILabel!
-    @IBOutlet open var photosButton: UIBarButtonItem!
+//    @IBOutlet open var photosButton: UIBarButtonItem!
     
     public weak var delegate: TLPhotosPickerViewControllerDelegate? = nil
     public weak var logDelegate: TLPhotosPickerLogDelegate? = nil
@@ -242,11 +244,11 @@ open class TLPhotosPickerViewController: UIViewController {
             let userInterfaceStyle = self.traitCollection.userInterfaceStyle
             let image = TLBundle.podBundleImage(named: "pop_arrow")
             if userInterfaceStyle.rawValue == 2 {
-                self.popArrowImageView.image = image?.colorMask(color: .systemBackground)
+//                self.popArrowImageView.image = image?.colorMask(color: .systemBackground)
                 self.view.backgroundColor = .black
                 self.collectionView.backgroundColor = .black
             }else {
-                self.popArrowImageView.image = image?.colorMask(color: .white)
+//                self.popArrowImageView.image = image?.colorMask(color: .white)
                 self.view.backgroundColor = .white
                 self.collectionView.backgroundColor = .white
             }
@@ -421,7 +423,7 @@ extension TLPhotosPickerViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(titleTap))
         self.titleView.addGestureRecognizer(tapGesture)
         self.titleLabel.text = self.configure.customLocalizedTitle["Camera Roll"]
-        self.subTitleLabel.text = self.configure.tapHereToChange
+//        self.subTitleLabel.text = self.configure.tapHereToChange
         self.cancelButton.title = self.configure.cancelTitle
         self.doneButton.title = self.configure.doneTitle
         self.doneButton.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)], for: .normal)
@@ -430,8 +432,9 @@ extension TLPhotosPickerViewController {
         self.emptyMessageLabel.text = self.configure.emptyMessage
         self.albumPopView.tableView.delegate = self
         self.albumPopView.tableView.dataSource = self
-        self.popArrowImageView.image = TLBundle.podBundleImage(named: "pop_arrow")
-        self.subTitleArrowImageView.image = TLBundle.podBundleImage(named: "arrow")
+        self.albumPopView.subTitleArrowImageView = self.subTitleArrowImageView
+//        self.popArrowImageView.image = TLBundle.podBundleImage(named: "pop_arrow")
+        self.subTitleArrowImageView.image = TLBundle.podBundleImage(named: "nav_btn_dropdown")
         if #available(iOS 10.0, *), self.usedPrefetch {
             self.collectionView.isPrefetchingEnabled = true
             self.collectionView.prefetchDataSource = self
@@ -449,11 +452,12 @@ extension TLPhotosPickerViewController {
         guard self.customNavItem.rightBarButtonItem == nil else {
             return
         }
-        if #available(iOS 14.0, *), self.photoLibrary.limitMode && self.configure.preventAutomaticLimitedAccessAlert {
-            self.customNavItem.rightBarButtonItems = [self.doneButton, self.photosButton]
-        } else {
-            self.customNavItem.rightBarButtonItems = [self.doneButton]
-        }
+        self.customNavItem.rightBarButtonItems = [self.doneButton]
+//        if #available(iOS 14.0, *), self.photoLibrary.limitMode && self.configure.preventAutomaticLimitedAccessAlert {
+//            self.customNavItem.rightBarButtonItems = [self.doneButton, self.photosButton]
+//        } else {
+//            self.customNavItem.rightBarButtonItems = [self.doneButton]
+//        }
     }
     
     private func updateTitle() {
@@ -624,7 +628,7 @@ extension TLPhotosPickerViewController: TLPhotoLibraryDelegate {
         self.collections = collections
         self.focusFirstCollection()
         let isEmpty = self.collections.count == 0
-        self.subTitleStackView.isHidden = isEmpty
+//        self.subTitleStackView.isHidden = isEmpty
         self.emptyView.isHidden = !isEmpty
         self.emptyImageView.isHidden = self.emptyImageView.image == nil
         self.indicator.stopAnimating()
@@ -1215,7 +1219,7 @@ extension TLPhotosPickerViewController: UITableViewDelegate, UITableViewDataSour
         let collection = self.collections[indexPath.row]
         cell.titleLabel.text = collection.title
         cell.subTitleLabel.text = "\(collection.fetchResult?.count ?? 0)"
-        if let phAsset = collection.getAsset(at: collection.useCameraButton ? 1 : 0) {
+        if let phAsset = collection.getAsset(at: collection.count-1) {
             let scale = UIScreen.main.scale
             let size = CGSize(width: 80*scale, height: 80*scale)
             self.photoLibrary.imageAsset(asset: phAsset, size: size, completionBlock: {  (image,complete) in
@@ -1226,7 +1230,8 @@ extension TLPhotosPickerViewController: UITableViewDelegate, UITableViewDataSour
                 }
             })
         }
-        cell.accessoryType = getfocusedIndex() == indexPath.row ? .checkmark : .none
+        cell.accessoryView = UIImageView.init(image: UIImage.init(named: "arrow_icon"))
+        cell.backgroundColor = getfocusedIndex() == indexPath.row ? self.configure.albumSelectedColor : self.configure.albumNormalColor
         cell.selectionStyle = .none
         return cell
     }
