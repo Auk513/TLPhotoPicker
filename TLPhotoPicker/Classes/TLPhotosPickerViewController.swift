@@ -11,7 +11,7 @@ import Photos
 import PhotosUI
 import MobileCoreServices
 
-public protocol TLPhotosPickerViewControllerDelegate: class {
+public protocol TLPhotosPickerViewControllerDelegate: AnyObject {
     func dismissPhotoPicker(withPHAssets: [PHAsset])
     func dismissPhotoPicker(withTLPHAssets: [TLPHAsset])
     func shouldDismissPhotoPicker(withTLPHAssets: [TLPHAsset]) -> Bool
@@ -37,7 +37,7 @@ extension TLPhotosPickerViewControllerDelegate {
 }
 
 //for log
-public protocol TLPhotosPickerLogDelegate: class {
+public protocol TLPhotosPickerLogDelegate: AnyObject {
     func selectedCameraCell(picker: TLPhotosPickerViewController)
     func deselectedPhoto(picker: TLPhotosPickerViewController, at: Int)
     func selectedPhoto(picker: TLPhotosPickerViewController, at: Int)
@@ -242,7 +242,7 @@ open class TLPhotosPickerViewController: UIViewController {
         
         if #available(iOS 13.0, *) {
             let userInterfaceStyle = self.traitCollection.userInterfaceStyle
-            let image = TLBundle.podBundleImage(named: "pop_arrow")
+//            let image = TLBundle.podBundleImage(named: "pop_arrow")
             if userInterfaceStyle.rawValue == 2 {
 //                self.popArrowImageView.image = image?.colorMask(color: .systemBackground)
                 self.view.backgroundColor = .black
