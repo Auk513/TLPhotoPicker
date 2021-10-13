@@ -21,6 +21,7 @@ public protocol TLPhotosPickerViewControllerDelegate: AnyObject {
     func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController)
     func handleNoAlbumPermissions(picker: TLPhotosPickerViewController)
     func handleNoCameraPermissions(picker: TLPhotosPickerViewController)
+    func reloadComplete(picker: TLPhotosPickerViewController)
 }
 
 extension TLPhotosPickerViewControllerDelegate {
@@ -34,6 +35,7 @@ extension TLPhotosPickerViewControllerDelegate {
     public func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController) { }
     public func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) { }
     public func handleNoCameraPermissions(picker: TLPhotosPickerViewController) { }
+    public func reloadComplete(picker: TLPhotosPickerViewController) {}
 }
 
 //for log
@@ -488,7 +490,10 @@ extension TLPhotosPickerViewController {
         self.collectionView.layoutIfNeeded()
         let offsetY = self.collectionView.contentSize.height - self.collectionView.bounds.size.height + self.collectionView.contentInset.bottom
         DispatchQueue.main.async {
-            self.collectionView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: false)
+            if offsetY > 0 {
+                self.collectionView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: false)
+            }
+            self.delegate?.reloadComplete(picker: self)
         }
     }
     
