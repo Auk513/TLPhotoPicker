@@ -47,10 +47,12 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
     var configure = TLPhotosPickerConfigure() {
         didSet {
             self.selectedView?.layer.borderColor = self.configure.selectedColor.cgColor
-            self.orderBgView?.backgroundColor = self.configure.selectedColor
+            self.orderBgView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
             self.videoIconImageView?.image = self.configure.videoIcon
             self.orderBgView?.isHidden = self.configure.singleSelectedMode
             self.orderLabel?.isHidden = self.configure.singleSelectedMode
+            self.orderLabel?.textColor = UIColor.white
+            self.orderLabel?.font = UIFont.boldSystemFont(ofSize: 30)
         }
     }
     
@@ -90,7 +92,7 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
     
     @objc open var selectedAsset: Bool = false {
         willSet(newValue) {
-            self.orderBgView?.layer.cornerRadius = (self.orderBgView?.bounds.height ?? 2)/2.0
+//            self.orderBgView?.layer.cornerRadius = (self.orderBgView?.bounds.height ?? 2)/2.0
             self.selectedView?.isHidden = !newValue
             self.durationView?.backgroundColor = newValue ? self.configure.selectedColor : UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
             if !newValue {
@@ -162,7 +164,7 @@ open class TLPhotoCollectionViewCell: UICollectionViewCell {
         self.selectedView?.isHidden = true
         self.selectedView?.layer.borderWidth = 7
         self.selectedView?.layer.cornerRadius = 0
-        self.orderBgView?.layer.cornerRadius = 2
+//        self.orderBgView?.layer.cornerRadius = 2
         self.videoIconImageView?.image = self.configure.videoIcon
         if #available(iOS 11.0, *) {
             self.imageView?.accessibilityIgnoresInvertColors = true

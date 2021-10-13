@@ -33,52 +33,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8O-Gg-slz">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                    <items>
-                        <navigationItem id="5CU-MZ-p1K">
-                            <nil key="title"/>
-                            <barButtonItem key="leftBarButtonItem" title="Cancel" id="sqJ-Z7-zxj">
-                                <connections>
-                                    <action selector="cancelButtonTap" destination="-1" id="dm0-Ur-I5r"/>
-                                </connections>
-                            </barButtonItem>
-                            <view key="titleView" contentMode="scaleToFill" id="VAz-Py-dsa">
-                                <rect key="frame" x="100.5" y="0.0" width="174.5" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ql8-7f-9Uk">
-                                        <rect key="frame" x="0.0" y="0.0" width="174.5" height="44"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuG-bc-Oq9">
-                                                <rect key="frame" x="0.0" y="12.5" width="147.5" height="19.5"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="nav_btn_dropdown" translatesAutoresizingMaskIntoConstraints="NO" id="b7w-7R-rco">
-                                                <rect key="frame" x="152.5" y="11" width="22" height="22"/>
-                                            </imageView>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="Ql8-7f-9Uk" firstAttribute="centerY" secondItem="VAz-Py-dsa" secondAttribute="centerY" id="6Ih-kd-ghQ"/>
-                                    <constraint firstItem="Ql8-7f-9Uk" firstAttribute="height" secondItem="VAz-Py-dsa" secondAttribute="height" id="Gh9-sw-V5F"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ql8-7f-9Uk" secondAttribute="trailing" id="Owe-ER-h6f"/>
-                                    <constraint firstItem="Ql8-7f-9Uk" firstAttribute="centerX" secondItem="VAz-Py-dsa" secondAttribute="centerX" id="aK3-vC-eSr"/>
-                                    <constraint firstItem="Ql8-7f-9Uk" firstAttribute="leading" secondItem="VAz-Py-dsa" secondAttribute="leading" id="evU-3h-HWS"/>
-                                </constraints>
-                            </view>
-                            <barButtonItem key="rightBarButtonItem" title="Done" id="daA-Ag-vVv">
-                                <connections>
-                                    <action selector="doneButtonTap" destination="-1" id="BzF-rn-rn4"/>
-                                </connections>
-                            </barButtonItem>
-                        </navigationItem>
-                    </items>
-                </navigationBar>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wZO-4y-5ic">
                     <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                     <subviews>
@@ -187,6 +141,52 @@
                         <constraint firstItem="HPm-Vc-F86" firstAttribute="top" secondItem="wZO-4y-5ic" secondAttribute="top" id="y42-3b-hHc"/>
                     </constraints>
                 </view>
+                <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8O-Gg-slz">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <items>
+                        <navigationItem id="5CU-MZ-p1K">
+                            <nil key="title"/>
+                            <barButtonItem key="leftBarButtonItem" title="Cancel" id="sqJ-Z7-zxj">
+                                <connections>
+                                    <action selector="cancelButtonTap" destination="-1" id="dm0-Ur-I5r"/>
+                                </connections>
+                            </barButtonItem>
+                            <view key="titleView" contentMode="scaleToFill" id="VAz-Py-dsa">
+                                <rect key="frame" x="100.5" y="0.0" width="174.5" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ql8-7f-9Uk">
+                                        <rect key="frame" x="0.0" y="0.0" width="174.5" height="44"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuG-bc-Oq9">
+                                                <rect key="frame" x="0.0" y="12.5" width="147.5" height="19.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="nav_btn_dropdown" translatesAutoresizingMaskIntoConstraints="NO" id="b7w-7R-rco">
+                                                <rect key="frame" x="152.5" y="11" width="22" height="22"/>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Ql8-7f-9Uk" firstAttribute="centerY" secondItem="VAz-Py-dsa" secondAttribute="centerY" id="6Ih-kd-ghQ"/>
+                                    <constraint firstItem="Ql8-7f-9Uk" firstAttribute="height" secondItem="VAz-Py-dsa" secondAttribute="height" id="Gh9-sw-V5F"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ql8-7f-9Uk" secondAttribute="trailing" id="Owe-ER-h6f"/>
+                                    <constraint firstItem="Ql8-7f-9Uk" firstAttribute="centerX" secondItem="VAz-Py-dsa" secondAttribute="centerX" id="aK3-vC-eSr"/>
+                                    <constraint firstItem="Ql8-7f-9Uk" firstAttribute="leading" secondItem="VAz-Py-dsa" secondAttribute="leading" id="evU-3h-HWS"/>
+                                </constraints>
+                            </view>
+                            <barButtonItem key="rightBarButtonItem" title="Done" id="daA-Ag-vVv">
+                                <connections>
+                                    <action selector="doneButtonTap" destination="-1" id="BzF-rn-rn4"/>
+                                </connections>
+                            </barButtonItem>
+                        </navigationItem>
+                    </items>
+                </navigationBar>
             </subviews>
             <viewLayoutGuide key="safeArea" id="HLR-WT-D3I"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

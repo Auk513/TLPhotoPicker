@@ -475,23 +475,21 @@ extension TLPhotosPickerViewController {
                 self?.focusedCollection?.reloadSection(groupedBy: groupedBy)
                 DispatchQueue.main.async {
                     self?.collectionView.reloadData()
-                    self?.scrollToBottom()
+                    self?.scrollToBottom(false)
                 }
             }
         }else {
             self.collectionView.reloadData()
-            self.scrollToBottom()
+            self.scrollToBottom(false)
         }
     }
     
-    private func scrollToBottom() {
+    open func scrollToBottom(_ animated: Bool) {
         self.collectionView.layoutIfNeeded()
-        let section: Int = self.focusedCollection?.sections?.count ?? 1
-        guard let collection = self.focusedCollection else {
-            return
+        let offsetY = self.collectionView.contentSize.height - self.collectionView.bounds.size.height + self.collectionView.contentInset.bottom
+        DispatchQueue.main.async {
+            self.collectionView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: false)
         }
-        let row = self.focusedCollection?.sections?[safe: section]?.assets.count ?? collection.count
-        self.collectionView.scrollToItem(at: .init(row: max(row-1, 0), section: max(section-1, 0)), at: .top, animated: false)
     }
     
     private func reloadTableView() {
@@ -750,6 +748,10 @@ extension TLPhotosPickerViewController: UIImagePickerControllerDelegate, UINavig
 
 // MARK: - UICollectionView Scroll Delegate
 extension TLPhotosPickerViewController {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+       
+    }
+    
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             videoCheck()
