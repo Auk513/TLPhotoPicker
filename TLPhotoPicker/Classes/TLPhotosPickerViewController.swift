@@ -491,7 +491,7 @@ extension TLPhotosPickerViewController {
         let offsetY = self.collectionView.contentSize.height - self.collectionView.bounds.size.height + self.collectionView.contentInset.bottom
         DispatchQueue.main.async {
             if offsetY > 0 {
-                self.collectionView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: false)
+                self.collectionView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: animated)
             }
             self.delegate?.reloadComplete(picker: self)
         }
