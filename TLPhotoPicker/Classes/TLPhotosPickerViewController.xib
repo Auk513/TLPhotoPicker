@@ -15,7 +15,6 @@
                 <outlet property="cancelButton" destination="sqJ-Z7-zxj" id="J6u-hz-ePK"/>
                 <outlet property="collectionView" destination="4gR-Bn-quP" id="ZOF-qU-cpd"/>
                 <outlet property="customNavItem" destination="5CU-MZ-p1K" id="ih7-d3-nco"/>
-                <outlet property="doneButton" destination="daA-Ag-vVv" id="P53-fy-Sbh"/>
                 <outlet property="emptyImageView" destination="YDZ-o1-AXT" id="TVN-0v-aQc"/>
                 <outlet property="emptyMessageLabel" destination="7qj-q4-rHC" id="Bcp-Hu-lEY"/>
                 <outlet property="emptyView" destination="HPm-Vc-F86" id="4FT-XL-9ql"/>
@@ -179,11 +178,6 @@
                                     <constraint firstItem="Ql8-7f-9Uk" firstAttribute="leading" secondItem="VAz-Py-dsa" secondAttribute="leading" id="evU-3h-HWS"/>
                                 </constraints>
                             </view>
-                            <barButtonItem key="rightBarButtonItem" title="Done" id="daA-Ag-vVv">
-                                <connections>
-                                    <action selector="doneButtonTap" destination="-1" id="BzF-rn-rn4"/>
-                                </connections>
-                            </barButtonItem>
                         </navigationItem>
                     </items>
                 </navigationBar>

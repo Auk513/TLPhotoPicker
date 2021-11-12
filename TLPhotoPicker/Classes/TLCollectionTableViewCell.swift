@@ -18,6 +18,8 @@ open class TLCollectionTableViewCell: UITableViewCell {
         if #available(iOS 11.0, *) {
             self.thumbImageView.accessibilityIgnoresInvertColors = true
         }
+        self.thumbImageView.layer.cornerRadius = 10.0
+        self.thumbImageView.layer.masksToBounds = true
         self.contentView.backgroundColor = .clear
         self.titleLabel.textColor = UIColor(red: 33/255, green: 38/255, blue: 44/255, alpha: 1)
         self.subTitleLabel.textColor = UIColor(red: 66/255, green: 66/255, blue: 66/255, alpha: 1)

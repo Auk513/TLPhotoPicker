@@ -146,7 +146,7 @@ open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var indicator: UIActivityIndicatorView!
 //    @IBOutlet open var popArrowImageView: UIImageView!
     @IBOutlet open var customNavItem: UINavigationItem!
-    @IBOutlet open var doneButton: UIBarButtonItem!
+//    @IBOutlet open var doneButton: UIBarButtonItem!
     @IBOutlet open var cancelButton: UIBarButtonItem!
     @IBOutlet open var navigationBarTopConstraint: NSLayoutConstraint!
     @IBOutlet open var emptyView: UIView!
@@ -427,8 +427,8 @@ extension TLPhotosPickerViewController {
         self.titleLabel.text = self.configure.customLocalizedTitle["Camera Roll"]
 //        self.subTitleLabel.text = self.configure.tapHereToChange
         self.cancelButton.title = self.configure.cancelTitle
-        self.doneButton.title = self.configure.doneTitle
-        self.doneButton.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)], for: .normal)
+//        self.doneButton.title = self.configure.doneTitle
+//        self.doneButton.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)], for: .normal)
         self.emptyView.isHidden = true
         self.emptyImageView.image = self.configure.emptyImage
         self.emptyMessageLabel.text = self.configure.emptyMessage
@@ -454,7 +454,7 @@ extension TLPhotosPickerViewController {
         guard self.customNavItem.rightBarButtonItem == nil else {
             return
         }
-        self.customNavItem.rightBarButtonItems = [self.doneButton]
+//        self.customNavItem.rightBarButtonItems = [self.doneButton]
 //        if #available(iOS 14.0, *), self.photoLibrary.limitMode && self.configure.preventAutomaticLimitedAccessAlert {
 //            self.customNavItem.rightBarButtonItems = [self.doneButton, self.photosButton]
 //        } else {
