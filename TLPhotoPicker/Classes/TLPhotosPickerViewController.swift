@@ -43,7 +43,7 @@ public protocol TLPhotosPickerLogDelegate: AnyObject {
     func selectedCameraCell(picker: TLPhotosPickerViewController)
     func deselectedPhoto(picker: TLPhotosPickerViewController, at: Int)
     func selectedPhoto(picker: TLPhotosPickerViewController, at: Int)
-    func selectedAlbum(picker: TLPhotosPickerViewController, title: String, at: Int)
+    func selectedAlbum(picker: TLPhotosPickerViewController, title: String, localIdentifier: String, at: Int)
     func selectedAssetsChanged(picker: TLPhotosPickerViewController)
 }
 
@@ -93,6 +93,8 @@ public struct TLPhotosPickerConfigure {
     public var nibSet: (nibName: String, bundle:Bundle)? = nil
     public var cameraCellNibSet: (nibName: String, bundle:Bundle)? = nil
     public var fetchCollectionTypes: [(PHAssetCollectionType,PHAssetCollectionSubtype)]? = nil
+    /// 相簿列表就绪、尚未聚焦时调用。返回要打开的下标；nil 则打开第一个。
+    public var initialAlbumIndex: ((_ albums: [(identifier: String, title: String)]) -> Int?)? = nil
     public var groupByFetch: PHFetchedResultGroupedBy? = nil
     public var supportedInterfaceOrientations: UIInterfaceOrientationMask = .portrait
     public var albumSelectedColor = UIColor(red: 88/255, green: 144/255, blue: 255/255, alpha: 0.1)
@@ -610,11 +612,18 @@ extension TLPhotosPickerViewController {
     }
     
     private func focusFirstCollection() {
-        if self.focusedCollection == nil, let collection = self.collections.first {
-            self.focusedCollection = collection
-            self.updateTitle()
-            self.reloadCollectionView()
-        }
+        guard self.focusedCollection == nil, let collection = self.collectionForInitialFocus() else { return }
+        self.focusedCollection = collection
+        self.updateTitle()
+        self.reloadCollectionView()
+    }
+
+    private func collectionForInitialFocus() -> TLAssetsCollection? {
+        guard let first = collections.first else { return nil }
+        guard let choose = configure.initialAlbumIndex else { return first }
+        let albums = collections.map { (identifier: $0.localIdentifier, title: $0.title) }
+        guard let index = choose(albums), collections.indices.contains(index) else { return first }
+        return collections[index]
     }
 }
 
@@ -1216,8 +1225,9 @@ extension TLPhotosPickerViewController: UICollectionViewDelegateFlowLayout {
 extension TLPhotosPickerViewController: UITableViewDelegate, UITableViewDataSource {
     //delegate
     open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.logDelegate?.selectedAlbum(picker: self, title: self.collections[indexPath.row].title, at: indexPath.row)
-        self.focused(collection: self.collections[indexPath.row])
+        let collection = self.collections[indexPath.row]
+        self.logDelegate?.selectedAlbum(picker: self, title: collection.title, localIdentifier: collection.localIdentifier, at: indexPath.row)
+        self.focused(collection: collection)
     }
     
     //datasource
