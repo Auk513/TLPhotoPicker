@@ -367,8 +367,8 @@ public struct TLAssetsCollection {
     func getAsset(at index: Int) -> PHAsset? {
         if self.useCameraButton && index == 0 { return nil }
         let index = index - (self.useCameraButton ? 1 : 0)
-        guard let result = self.fetchResult, index < result.count else { return nil }
-        return result.object(at: max(index,0))
+        guard let result = self.fetchResult, index >= 0, index < result.count else { return nil }
+        return result.object(at: index)
     }
     
     func getTLAsset(at indexPath: IndexPath) -> TLPHAsset? {
